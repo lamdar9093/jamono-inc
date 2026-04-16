@@ -1,0 +1,42 @@
+---
+import type { Translations } from "../i18n/fr";
+interface Props { t: Translations; lang: string; }
+const { t, lang } = Astro.props;
+const otherLang = lang === "fr" ? "en" : "fr";
+const otherLangUrl = lang === "fr" ? "/en" : "/";
+---
+
+<header id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-black/8 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <!-- Logo -->
+    <a href={lang === "fr" ? "/" : "/en"} class="flex items-center gap-2.5 group">
+      <div class="w-8 h-8 bg-[#EE0000] flex items-center justify-center rounded">
+        <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
+          <rect x="1" y="1" width="5" height="5" rx="1" fill="white"/>
+          <rect x="8" y="1" width="5" height="5" rx="1" fill="white"/>
+          <rect x="1" y="8" width="5" height="5" rx="1" fill="white"/>
+          <rect x="8" y="8" width="5" height="5" rx="1" fill="white" opacity="0.5"/>
+        </svg>
+      </div>
+      <span class="font-bold text-[#151515] text-[16px] tracking-tight">Jamono<span class="font-light"> Inc.</span></span>
+    </a>
+
+    <!-- Nav -->
+    <nav class="hidden md:flex items-center gap-8">
+      <a href="#products" class="text-sm text-[#444] hover:text-[#EE0000] transition-colors duration-200 font-medium">{t.nav.products}</a>
+      <a href="#services" class="text-sm text-[#444] hover:text-[#EE0000] transition-colors duration-200 font-medium">{t.nav.services}</a>
+      <a href="#about" class="text-sm text-[#444] hover:text-[#EE0000] transition-colors duration-200 font-medium">{t.nav.about}</a>
+    </nav>
+
+    <!-- Right -->
+    <div class="flex items-center gap-4">
+      <a href={otherLangUrl} class="text-xs font-semibold text-[#666] hover:text-[#EE0000] transition-colors duration-200 uppercase tracking-wider">{otherLang}</a>
+      <a
+        href="#contact"
+        class="hidden md:inline-flex items-center bg-[#EE0000] text-white text-sm font-semibold px-5 py-2 hover:bg-[#CC0000] transition-colors duration-200 rounded"
+      >
+        {t.nav.cta}
+      </a>
+    </div>
+  </div>
+</header>

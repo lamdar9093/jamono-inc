@@ -1,0 +1,210 @@
+---
+import type { Translations } from "../i18n/fr";
+interface Props { t: Translations; }
+const { t } = Astro.props;
+const [line1, line2] = t.hero.title.split("\n");
+---
+
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 bg-white">
+  <!-- Geometric depth layers — Jamono visual identity -->
+  <!-- Layer 1 : grille de fond (la plus profonde) -->
+  <div class="absolute inset-0 pointer-events-none" style="background-image: linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px); background-size: 56px 56px;"></div>
+
+  <!-- Layer 2 : formes géométriques animées (3 plans de profondeur) -->
+  <svg id="geo-svg" class="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- Plan lointain (bouge très peu) -->
+    <g id="geo-far">
+      <circle class="geo-arc geo-arc-1" cx="96%" cy="-2%" r="480" fill="none" stroke="#EE0000" stroke-width="1" stroke-dasharray="3016" stroke-dashoffset="3016"/>
+      <circle class="geo-arc geo-arc-2" cx="96%" cy="-2%" r="360" fill="none" stroke="#EE0000" stroke-width="1.5" stroke-dasharray="2262" stroke-dashoffset="2262"/>
+      <line class="geo-diag-1" x1="0" y1="82%" x2="14%" y2="58%" stroke="#151515" stroke-width="1" stroke-dasharray="400" stroke-dashoffset="400"/>
+      <line class="geo-diag-2" x1="0" y1="90%" x2="16%" y2="66%" stroke="#151515" stroke-width="0.8" stroke-dasharray="400" stroke-dashoffset="400"/>
+    </g>
+
+    <!-- Plan intermédiaire -->
+    <g id="geo-mid">
+      <circle class="geo-arc geo-arc-3" cx="96%" cy="-2%" r="240" fill="none" stroke="#EE0000" stroke-width="2" stroke-dasharray="1508" stroke-dashoffset="1508"/>
+      <rect class="geo-square-1" x="82%" y="6%" width="52" height="52" rx="6" fill="none" stroke="#EE0000" stroke-width="1.5" stroke-dasharray="208" stroke-dashoffset="208"/>
+      <line class="geo-line-2" x1="0" y1="37%" x2="5%" y2="37%" stroke="#EE0000" stroke-width="1" stroke-dasharray="200" stroke-dashoffset="200"/>
+    </g>
+
+    <!-- Plan rapproché (bouge le plus) -->
+    <g id="geo-near">
+      <rect class="geo-fill-1" x="87%" y="13%" width="20" height="20" rx="3" fill="#EE0000" opacity="0"/>
+      <line class="geo-line-1" x1="0" y1="34%" x2="8%" y2="34%" stroke="#EE0000" stroke-width="2.5" stroke-dasharray="200" stroke-dashoffset="200"/>
+      <circle class="geo-dot" style="--d:0.9s" cx="84%" cy="72%" r="3.5" fill="#EE0000" opacity="0"/>
+      <circle class="geo-dot" style="--d:1.0s" cx="87.5%" cy="72%" r="3.5" fill="#EE0000" opacity="0"/>
+      <circle class="geo-dot" style="--d:1.1s" cx="91%" cy="72%" r="3.5" fill="#EE0000" opacity="0"/>
+      <circle class="geo-dot" style="--d:1.15s" cx="84%" cy="76.5%" r="3.5" fill="#EE0000" opacity="0"/>
+      <circle class="geo-dot" style="--d:1.2s" cx="87.5%" cy="76.5%" r="3.5" fill="#EE0000" opacity="0"/>
+      <circle class="geo-dot" style="--d:1.25s" cx="91%" cy="76.5%" r="3.5" fill="#EE0000" opacity="0"/>
+      <circle class="geo-dot" style="--d:1.3s" cx="84%" cy="81%" r="3.5" fill="#EE0000" opacity="0"/>
+      <circle class="geo-dot" style="--d:1.35s" cx="87.5%" cy="81%" r="3.5" fill="#EE0000" opacity="0"/>
+      <rect class="geo-square-1" x="3%" y="68%" width="18" height="18" rx="2" fill="none" stroke="#EE0000" stroke-width="1.2" stroke-dasharray="72" stroke-dashoffset="72" transform="rotate(45, 50, 50)"/>
+    </g>
+  </svg>
+
+  <style>
+    /* === Draw-in animations === */
+    @keyframes geo-draw { to { stroke-dashoffset: 0; } }
+    @keyframes geo-fade  { to { opacity: var(--to, 0.18); } }
+
+    /* Arcs — tracés en séquence, puis respiro lent */
+    .geo-arc-1 {
+      opacity: 0.12;
+      animation: geo-draw 2.2s cubic-bezier(0.6,0,0.4,1) 0.1s forwards,
+                 geo-breathe 7s ease-in-out 2.4s infinite;
+    }
+    .geo-arc-2 {
+      opacity: 0.20;
+      animation: geo-draw 1.9s cubic-bezier(0.6,0,0.4,1) 0.5s forwards,
+                 geo-breathe 7s ease-in-out 2.4s infinite;
+    }
+    .geo-arc-3 {
+      opacity: 0.28;
+      animation: geo-draw 1.5s cubic-bezier(0.6,0,0.4,1) 0.9s forwards,
+                 geo-breathe 7s ease-in-out 2.4s infinite;
+    }
+    @keyframes geo-breathe {
+      0%, 100% { opacity: var(--base, 0.20); }
+      50%       { opacity: calc(var(--base, 0.20) * 0.45); }
+    }
+    .geo-arc-1 { --base: 0.12; }
+    .geo-arc-2 { --base: 0.20; }
+    .geo-arc-3 { --base: 0.28; }
+
+    /* Carré outline — draw-in */
+    .geo-square-1 {
+      opacity: 0.30;
+      animation: geo-draw 0.8s ease 1.3s forwards;
+    }
+
+    /* Petit carré plein — fade */
+    .geo-fill-1 {
+      animation: geo-fade 0.6s ease 1.6s forwards;
+      --to: 0.18;
+    }
+
+    /* Lignes gauche — draw depuis la gauche */
+    .geo-line-1 {
+      opacity: 0.45;
+      animation: geo-draw 0.5s ease 0.4s forwards;
+    }
+    .geo-line-2 {
+      opacity: 0.20;
+      animation: geo-draw 0.5s ease 0.6s forwards;
+    }
+
+    /* Points — apparition en cascade */
+    .geo-dot {
+      animation: geo-dot-in 0.4s ease var(--d, 1s) forwards;
+    }
+    @keyframes geo-dot-in {
+      0%   { opacity: 0; r: 1; }
+      60%  { opacity: 0.25; r: 4.5; }
+      100% { opacity: var(--to, 0.18); r: 3.5; }
+    }
+    .geo-dot:nth-child(1)  { --to: 0.28; }
+    .geo-dot:nth-child(2)  { --to: 0.22; }
+    .geo-dot:nth-child(3)  { --to: 0.15; }
+    .geo-dot:nth-child(4)  { --to: 0.20; }
+    .geo-dot:nth-child(5)  { --to: 0.14; }
+    .geo-dot:nth-child(6)  { --to: 0.09; }
+    .geo-dot:nth-child(7)  { --to: 0.12; }
+    .geo-dot:nth-child(8)  { --to: 0.08; }
+
+    /* Diagonales — fade-in discret */
+    .geo-diag-1 {
+      opacity: 0;
+      animation: geo-draw 1.2s ease 1.0s forwards;
+    }
+    .geo-diag-2 {
+      opacity: 0;
+      animation: geo-draw 1.2s ease 1.1s forwards;
+    }
+    .geo-diag-1 { opacity: 0.12; }
+    .geo-diag-2 { opacity: 0.08; }
+  </style>
+
+  <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+    <div class="hero-el inline-flex items-center gap-2 bg-[#EE0000]/8 border border-[#EE0000]/20 rounded-full px-4 py-1.5 mb-10 opacity-0">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#EE0000]"></span>
+      <span class="text-[11px] text-[#EE0000] tracking-widest uppercase font-semibold">{t.hero.badge}</span>
+    </div>
+
+    <h1 class="hero-el opacity-0 font-extrabold tracking-tight leading-[1.08] mb-7" style="font-size: clamp(44px, 7.5vw, 84px);">
+      <span class="text-[#151515]">{line1}</span><br/>
+      <span class="text-[#151515]">{line2}</span>
+    </h1>
+
+    <p class="hero-el opacity-0 text-[#555] leading-relaxed mb-10 max-w-2xl mx-auto" style="font-size: clamp(15px, 1.8vw, 18px);">
+      {t.hero.subtitle}
+    </p>
+
+    <div class="hero-el opacity-0 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="#products" class="inline-flex items-center gap-2 bg-[#EE0000] text-white font-semibold px-7 py-3.5 hover:bg-[#CC0000] transition-colors duration-200 text-sm rounded">
+        {t.hero.cta_primary}
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#contact" class="inline-flex items-center gap-2 border-2 border-[#151515] text-[#151515] font-semibold px-7 py-3.5 hover:bg-[#151515] hover:text-white transition-all duration-200 text-sm rounded">
+        {t.hero.cta_secondary}
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Hero text fade-in
+  const els = document.querySelectorAll(".hero-el");
+  els.forEach((el, i) => {
+    (el as HTMLElement).style.transition = `opacity 0.65s ease ${i * 0.1 + 0.05}s, transform 0.65s ease ${i * 0.1 + 0.05}s`;
+    (el as HTMLElement).style.transform = "translateY(18px)";
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      (el as HTMLElement).style.opacity = "1";
+      (el as HTMLElement).style.transform = "translateY(0)";
+    }));
+  });
+
+  // Parallax sur les couches géométriques
+  const section = document.querySelector("section") as HTMLElement;
+  const far  = document.getElementById("geo-far")  as SVGGElement | null;
+  const mid  = document.getElementById("geo-mid")  as SVGGElement | null;
+  const near = document.getElementById("geo-near") as SVGGElement | null;
+
+  if (section && far && mid && near) {
+    let cx = 0, cy = 0;
+    let tx = { far: 0, mid: 0, near: 0 };
+    let ty = { far: 0, mid: 0, near: 0 };
+    let raf: number;
+
+    section.addEventListener("mousemove", (e: MouseEvent) => {
+      const rect = section.getBoundingClientRect();
+      // Normalise de -1 à 1
+      cx = ((e.clientX - rect.left) / rect.width  - 0.5) * 2;
+      cy = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;
+    });
+
+    section.addEventListener("mouseleave", () => {
+      cx = 0; cy = 0;
+    });
+
+    function tick() {
+      // Lerp smooth vers la cible
+      const ease = 0.07;
+      tx.far  += (cx * 6  - tx.far)  * ease;
+      ty.far  += (cy * 4  - ty.far)  * ease;
+      tx.mid  += (cx * 14 - tx.mid)  * ease;
+      ty.mid  += (cy * 9  - ty.mid)  * ease;
+      tx.near += (cx * 24 - tx.near) * ease;
+      ty.near += (cy * 16 - ty.near) * ease;
+
+      far.style.transform  = `translate(${tx.far}px,  ${ty.far}px)`;
+      mid.style.transform  = `translate(${tx.mid}px,  ${ty.mid}px)`;
+      near.style.transform = `translate(${tx.near}px, ${ty.near}px)`;
+
+      raf = requestAnimationFrame(tick);
+    }
+    tick();
+  }
+</script>

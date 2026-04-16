@@ -1,0 +1,27 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
+import Products from "../components/Products.astro";
+import Services from "../components/Services.astro";
+import About from "../components/About.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+import ScrollReveal from "../components/ScrollReveal.astro";
+import { fr as t } from "../i18n/fr";
+---
+
+<Layout
+  title="Jamono Inc. — Build. Ship. Scale."
+  description="Jamono Inc. conçoit des logiciels SaaS et offre des services tech pour les professionnels qui veulent avancer sans friction."
+  lang="fr"
+>
+  <Navbar t={t} lang="fr" />
+  <Hero t={t} />
+  <Products t={t} />
+  <Services t={t} />
+  <About t={t} />
+  <Contact t={t} />
+  <Footer t={t} lang="fr" />
+  <ScrollReveal />
+</Layout>

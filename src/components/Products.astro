@@ -1,0 +1,75 @@
+---
+import type { Translations } from "../i18n/fr";
+interface Props { t: Translations; }
+const { t } = Astro.props;
+---
+
+<section id="products" class="py-28 px-6 bg-[#151515]">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-14 reveal">
+      <p class="text-xs uppercase tracking-widest text-[#EE0000] font-semibold mb-3">{t.products.title}</p>
+      <h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight">{t.products.subtitle}</h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-5">
+      {t.products.items.map((product, i) => (
+        <div
+          class="reveal product-card group flex flex-col p-8 rounded border border-white/8 bg-[#1f1f1f] hover:border-[#EE0000]/40 transition-all duration-300"
+          style={`animation-delay: ${i * 80}ms`}
+        >
+          <div class="flex items-start justify-between mb-8">
+            <div class={`w-10 h-10 flex items-center justify-center rounded ${product.status === "live" ? "bg-[#EE0000]" : "bg-white/8"}`}>
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                {product.status === "live" ? (
+                  <>
+                    <rect x="2" y="3" width="14" height="12" rx="2" stroke="white" stroke-width="1.5"/>
+                    <path d="M6 3V1M12 3V1M2 7h14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M6 11l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </>
+                ) : (
+                  <>
+                    <rect x="2" y="2" width="14" height="14" rx="3" stroke="#666" stroke-width="1.5"/>
+                    <path d="M6 9h6M9 6v6" stroke="#666" stroke-width="1.5" stroke-linecap="round"/>
+                  </>
+                )}
+              </svg>
+            </div>
+            <span class={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded
+              ${product.status === "live" ? "bg-[#EE0000]/15 text-[#EE0000]" : "bg-white/5 text-white/30"}`}>
+              {product.label}
+            </span>
+          </div>
+
+          <div class="flex-1">
+            <h3 class="text-xl font-bold text-white mb-1">{product.name}</h3>
+            <p class="text-xs text-white/35 font-semibold mb-4 uppercase tracking-widest">{product.tag}</p>
+            <p class="text-sm text-white/55 leading-relaxed">{product.description}</p>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-white/8">
+            {product.url ? (
+              <a
+                href={product.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-sm font-semibold text-[#EE0000] hover:gap-3 transition-all duration-200"
+              >
+                {t.products.visit_site}
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                  <path d="M2.5 6.5h8M7 3l3.5 3.5L7 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            ) : (
+              <span class="text-sm text-white/25 font-medium">{t.products.in_development}</span>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .product-card { will-change: transform; }
+  .product-card:hover { transform: translateY(-3px); }
+</style>
