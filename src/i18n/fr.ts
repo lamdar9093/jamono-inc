@@ -93,6 +93,10 @@ export const fr = {
     placeholder_name: "Votre nom",
     placeholder_email: "Votre courriel",
     placeholder_message: "Votre message",
+    card_response: "Réponse rapide",
+    card_bilingual: "Français & anglais",
+    card_tech: "Support technique",
+    card_human: "Approche humaine",
   },
   footer: {
     tagline: "Build. Ship. Scale.",

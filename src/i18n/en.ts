@@ -94,6 +94,10 @@ export const en: Translations = {
     placeholder_name: "Your name",
     placeholder_email: "Your email",
     placeholder_message: "Your message",
+    card_response: "Fast response",
+    card_bilingual: "French & English",
+    card_tech: "Technical support",
+    card_human: "Human approach",
   },
   footer: {
     tagline: "Build. Ship. Scale.",
