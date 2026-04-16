@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /var/www/jamonoinc
+            cd /var/www/jamono-inc
             git pull origin main
             docker compose down
             docker compose build
